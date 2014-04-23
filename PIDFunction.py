@@ -1,5 +1,3 @@
-# THIS IS A VERSION OF THE PIDFUNCTION1.PY CODE THAT TAKES THE AVERAGE OF TWO SENSORS
-
 # allows value to be read from pin
 import Adafruit_BBIO.ADC as ADC
 ADC.setup()
