@@ -5,7 +5,7 @@ import Adafruit_BBIO.ADC as ADC
 ADC.setup()
 
 # begin PID algorithm
-def PID_Algorithm(kp, ki, kd, n, u, error, ideal_value, ADC_INPUT_1, ADC_INPUT_2):
+def PID_Algorithm(kp, ki, kd, n, u, error, ideal_value, ADC_INPUT):
 	
 	# calculate k1, k2, k3
 	k1 = kp + ki + kd
@@ -17,9 +17,7 @@ def PID_Algorithm(kp, ki, kd, n, u, error, ideal_value, ADC_INPUT_1, ADC_INPUT_2
 	u_max = 1
 	
 	# read value from pin and display it
-	measured_value_1 = ADC.read(ADC_INPUT_1)
-	measured_value_2 = ADC.read(ADC_INPUT_2)
-	measured_value = (measured_value_1 + measured_value_2)/2
+	measured_value = ADC.read(ADC_INPUT)
 	
 	# if first call
 	if (n == 1):
