@@ -9,9 +9,9 @@ ki = 2
 kd = 0.5
 ideal_value = 0.1
 # LEFT_ADC_INPUT_1 = "P9_38"
-RIGHT_ADC_INPUT = "P9_37"
+LEFT_ADC_INPUT = "P9_37"
 # RIGHT_ADC_INPUT_1 = "P9_35"
-LEFT_ADC_INPUT = "P9_40"
+RIGHT_ADC_INPUT = "P9_40"
 
 # initial values
 n = 1
