@@ -49,6 +49,7 @@ while True:
         frame = cv2.resize(frame, (320, 240))
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 	gray = cv2.GaussianBlur(gray, (21, 21), 0)
+        cv2.imshow("Blur", gray)
 
 	# if the first frame is None, initialize it
 	if firstFrame is None:
@@ -64,16 +65,24 @@ while True:
 
 	# dilate the thresholded image to fill in holes, then find contours
 	# on thresholded image
-	thresh = cv2.dilate(thresh, None, iterations=2)
-        # cv2.imshow("Dilate", thresh)
+	thresh = cv2.dilate(thresh, None, iterations=15)
+	# thresh1 = cv2.dilate(thresh, None, iterations=5)
+	# thresh2 = cv2.dilate(thresh, None, iterations=10)
+	# thresh3 = cv2.dilate(thresh, None, iterations=20)
+	# thresh4 = cv2.dilate(thresh, None, iterations=40)
+        cv2.imshow("Dilate", thresh)
+        # cv2.imshow("Dilate 1", thresh1)
+        # cv2.imshow("Dilate 2", thresh2)
+        # cv2.imshow("Dilate 3", thresh3)
+        # cv2.imshow("Dilate 4", thresh4)
 	(cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
 		cv2.CHAIN_APPROX_SIMPLE)
 
 	# loop over the contours
 	for c in cnts:
 		# if the contour is too small, ignore it
-		# if cv2.contourArea(c) < args["min_area"]:
-			# continue
+		if cv2.contourArea(c) < args["min_area"]:
+		        continue
 
 		if cv2.contourArea(c) < 50:
 			continue
@@ -98,7 +107,11 @@ while True:
 
 	# if the `q` key is pressed, break from the lop
 	if key == ord("q"):
-		break
+            cv2.imwrite("./blur.jpg", gray)
+            cv2.imwrite("./diff.jpg", frameDelta)
+            # cv2.imwrite("./thresh.jpg", thresh)
+            cv2.imwrite("./dilate.jpg", thresh)
+            # break
 
         # Capture a new background image every after a number of iterations
         bgRestart = bgRestart - 1
