@@ -1,17 +1,20 @@
 # allows value to be read from pin
 import Adafruit_BBIO.ADC as ADC
 ADC.setup()
-ADC_INPUT = "P9_37"
 
 # begin PID algorithm
-def PID_Algorithm(kp, ki, kd, n, u, ideal_value):
+def PID_Algorithm(kp, ki, kd, n, u, error, ideal_value, ADC_INPUT):
 	
 	# variables that must be remembered outside the scope of this
+
+        """
 	# function but don't need to be passed are global
-	global error2
-	global error1
-	global error
+	global error[2]
+	global error[1]
+	global error[0]
 	global u1
+        */
+        """
 	
 	# calculate k1, k2, k3
 	k1 = kp + ki + kd
@@ -27,29 +30,29 @@ def PID_Algorithm(kp, ki, kd, n, u, ideal_value):
 	
 	# if first call
 	if (n == 1):
-		error2 = 0
-		error1 = 0
+		error[2] = 0
+		error[1] = 0
 		u1 = 0
 	
 	# if second call
 	elif (n == 2):
-		error2 = 0 
-		error1 = error
+		error[2] = 0 
+		error[1] = error[0]
 		u1 = u
 	
 	# if after second call
 	else:
-		error2 = error1
-		error1 = error
+		error[2] = error[1]
+		error[1] = error[0]
 		u1 = u
 	
 	# calculate error and control signal, u
-	error = ideal_value - measured_value
-	u = u1 + k1*error + k2*error1 + k3*error2
+	error[0] = ideal_value - measured_value
+	u = u1 + k1*error[0] + k2*error[1] + k3*error[2]
 	
 	# bound control signal, u
 	if (u > u_max): u = u_max
 	if (u < u_min): u = u_min
 		
 	# return control, u
-	return u
+	return u, error
