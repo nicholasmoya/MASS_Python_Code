@@ -1,0 +1,3 @@
+from motionDirection import *
+
+motionDirection()

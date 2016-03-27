@@ -4,7 +4,7 @@ import cv2
 
 def motionDirection():
     camera = cv2.VideoCapture(0)
-    time.sleep(3.25)
+    time.sleep(5)
 
     firstFrame = None
 
@@ -20,10 +20,10 @@ def motionDirection():
                 break
 
             # resize the frame, convert it to grayscale, and blur it
-            frame = cv2.resize(frame, (320, 240))
+            frame = cv2.resize(frame, (160, 120))
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             gray = cv2.GaussianBlur(gray, (21, 21), 0)
-            cv2.imshow("Blur", gray)
+            # cv2.imshow("Blur", gray)
 
             if firstFrame is None:
                 firstFrame = gray
@@ -32,7 +32,7 @@ def motionDirection():
             # compute the absolute difference between the current frame and
             # first frame
             frameDelta = cv2.absdiff(firstFrame, gray)
-            cv2.imshow("Diff", frameDelta)
+            # cv2.imshow("Diff", frameDelta)
             thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
             # cv2.imshow("Thresh", thresh)
 
@@ -43,7 +43,7 @@ def motionDirection():
             # thresh2 = cv2.dilate(thresh, None, iterations=10)
             # thresh3 = cv2.dilate(thresh, None, iterations=20)
             # thresh4 = cv2.dilate(thresh, None, iterations=40)
-            cv2.imshow("Dilate", thresh)
+            # cv2.imshow("Dilate", thresh)
             # cv2.imshow("Dilate 1", thresh1)
             # cv2.imshow("Dilate 2", thresh2)
             # cv2.imshow("Dilate 3", thresh3)
@@ -86,13 +86,13 @@ def motionDirection():
             if (countFramesWithMotion == 1):
                 largeContourCenter0 = largeContourCenter
         
-            if (countFramesWithMotion > 3):
+            if (countFramesWithMotion > 2):
                 xMotion = largeContourCenter[0] - largeContourCenter0[0]
-                if xMotion == 0: xMotion = 1 # prevent division by zero
+                if xMotion == 0: xMotion = 0 # prevent division by zero
                 print "Initial x-position: ", largeContourCenter0[0]
                 print "Final x-position: ", largeContourCenter[0]
-                print "X Motion: ", xMotion/abs(xMotion)
-                return xMotion/abs(xMotion)
+                print "X Motion: ", xMotion/120
+                return xMotion/120
 
             # draw the text and timestamp on the frame
             cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
@@ -108,11 +108,7 @@ def motionDirection():
 
             # if the `q` key is pressed, break from the lop
             if key == ord("q"):
-                cv2.imwrite("./blur.jpg", gray)
-                cv2.imwrite("./diff.jpg", frameDelta)
-                # cv2.imwrite("./thresh.jpg", thresh)
-                cv2.imwrite("./dilate.jpg", thresh)
-                # break
+                break
 
             # Capture a new background image every after a number of iterations
             bgRestart = bgRestart - 1

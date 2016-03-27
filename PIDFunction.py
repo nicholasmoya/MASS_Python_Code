@@ -2,8 +2,13 @@
 import Adafruit_BBIO.ADC as ADC
 ADC.setup()
 
+kp = 3.2
+ki = 2
+kd = 0.5
+ideal_value = 0.1
+
 # begin PID algorithm
-def PID_Algorithm(kp, ki, kd, n, u, error, ideal_value, ADC_INPUT):
+def PID_Algorithm(n, u, error, ADC_INPUT):
 	
 	# calculate k1, k2, k3
 	k1 = kp + ki + kd
